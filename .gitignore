@@ -184,3 +184,5 @@ Sessionx.vim
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+tmp/
