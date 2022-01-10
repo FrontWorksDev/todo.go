@@ -8,7 +8,7 @@ WORKDIR ${ROOT}
 ADD . ${ROOT}
 
 RUN apk update && apk upgrade
-RUN apk add git zsh vim
+RUN apk add git zsh vim alpine-sdk build-base
 
 RUN go install github.com/cosmtrek/air@latest
 

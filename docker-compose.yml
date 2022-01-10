@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   api:
-    container_name: 'todo-app'
+    container_name: 'todo_app'
     build: .
     tty: true
     stdin_open: true
@@ -16,7 +16,7 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: todo-app
+      MYSQL_DATABASE: todo_app
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
       TZ: 'Asia/Tokyo'
