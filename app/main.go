@@ -25,7 +25,8 @@ func main() {
 	{
 		v1 := taskEngine.Group("/v1")
 		{
-			v1.POST("/add", controller.BookAdd)
+			v1.POST("/add", controller.TaskAdd)
+			v1.GET("/list", controller.TaskList)
 		}
 	}
 

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func BookAdd(c *gin.Context) {
+func TaskAdd(c *gin.Context) {
 	task := model.Task{}
 	err := c.Bind(&task)
 	if err != nil {
@@ -25,5 +25,14 @@ func BookAdd(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"status": "ok",
+	})
+}
+
+func TaskList(c *gin.Context) {
+	taskService := service.TaskService{}
+	TaskLists := taskService.GetTaskList()
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"items":   TaskLists,
 	})
 }
