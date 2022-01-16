@@ -39,7 +39,7 @@ func TaskList(c *gin.Context) {
 }
 
 func TaskDelete(c *gin.Context) {
-	id := c.PostForm("ID")
+	id := c.Param("id")
 	intId, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")

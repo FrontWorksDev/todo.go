@@ -27,7 +27,7 @@ func main() {
 		{
 			v1.POST("/add", controller.TaskAdd)
 			v1.GET("/list", controller.TaskList)
-			v1.DELETE("/delete", controller.TaskDelete)
+			v1.DELETE("/delete/:id", controller.TaskDelete)
 		}
 	}
 
