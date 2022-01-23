@@ -14,6 +14,7 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{
 		"http://localhost:3000",
+		"https://todo.frontworks.dev",
 	}
 	engine.Use(cors.New(config))
 
