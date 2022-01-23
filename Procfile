@@ -1,1 +1,1 @@
-web: bin/todo.go
+web: ./bin/app
