@@ -39,16 +39,19 @@ func TaskList(c *gin.Context) {
 }
 
 func TaskUpdate(c *gin.Context) {
+	id := c.Param("id")
+	intId, errId := strconv.ParseInt(id, 10, 0)
+
 	task := model.Task{}
 	err := c.Bind(&task)
-	if err != nil {
+	if err != nil || errId != nil {
 		c.String(http.StatusBadRequest, "Bad Request")
 
 		return
 	}
 
 	taskService := service.TaskService{}
-	err = taskService.UpdateTask(&task)
+	err = taskService.UpdateTask(&task, int(intId))
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 

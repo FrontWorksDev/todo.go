@@ -55,7 +55,7 @@ func (TaskService) GetTaskList() []model.Task {
 	return tests
 }
 
-func (TaskService) UpdateTask(newTask *model.Task) error {
+func (TaskService) UpdateTask(newTask *model.Task, id int) error {
 	DsName := "root:root@(db:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
@@ -63,7 +63,7 @@ func (TaskService) UpdateTask(newTask *model.Task) error {
 		log.Fatal(err.Error())
 	}
 
-	result := DbEngine.Model(&newTask).Where("ID", newTask.ID).Updates(model.Task{Title: newTask.Title, Status: newTask.Status})
+	result := DbEngine.Model(&newTask).Where("ID", id).Updates(model.Task{Title: newTask.Title, Status: newTask.Status})
 	if result.Error != nil {
 		panic(result.Error)
 	}
