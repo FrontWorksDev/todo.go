@@ -186,3 +186,5 @@ Sessionx.vim
 *.vsix
 
 tmp/
+
+app/.env

@@ -7,12 +7,14 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 type TaskService struct{}
 
 func (TaskService) SetTask(task *model.Task) error {
-	DsName := "root:root@(db:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
+	loadEnv()
+	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
 	if err != nil && err.Error() != "" {
@@ -33,7 +35,9 @@ func (TaskService) SetTask(task *model.Task) error {
 }
 
 func (TaskService) GetTaskList() []model.Task {
-	DsName := "root:root@(db:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
+	loadEnv()
+	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
+
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
 	if err != nil && err.Error() != "" {
@@ -56,7 +60,9 @@ func (TaskService) GetTaskList() []model.Task {
 }
 
 func (TaskService) UpdateTask(newTask *model.Task, id int) error {
-	DsName := "root:root@(db:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
+	loadEnv()
+	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
+
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
 	if err != nil && err.Error() != "" {
@@ -78,7 +84,9 @@ func (TaskService) UpdateTask(newTask *model.Task, id int) error {
 }
 
 func (TaskService) DeleteBook(id int) error {
-	DsName := "root:root@(db:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
+	loadEnv()
+	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
+
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
 	if err != nil && err.Error() != "" {
