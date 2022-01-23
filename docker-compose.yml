@@ -10,7 +10,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./app:/go/src/app:delegated
+      - ./:/go/src/app:delegated
 
   db:
     image: mysql:8.0
