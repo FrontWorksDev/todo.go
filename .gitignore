@@ -187,4 +187,4 @@ Sessionx.vim
 
 tmp/
 
-app/.env
+.env
