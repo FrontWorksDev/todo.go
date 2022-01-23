@@ -11,27 +11,13 @@ func main() {
 	engine := gin.Default()
 
 	// cors setting
-	engine.Use(cors.New(cors.Config{
-		AllowMethods: []string{
-			"POST",
-			"GET",
-			"OPTIONS",
-			"PUT",
-			"DELETE",
-		},
-		AllowHeaders: []string{
-			"Access-Control-Allow-Headers",
-			"Content-Type",
-			"Content-Length",
-			"Accept-Encoding",
-			"X-CSRF-Token",
-			"Authorization",
-		},
-		AllowOrigins: []string{
-			"https://localhost:3000",
-			"https://todo.frontworks.dev",
-		},
-	}))
+	config := cors.DefaultConfig()
+	//config.AllowOrigins = []string{
+	//	"http://localhost:3000",
+	//	"https://todo.frontworks.dev",
+	//}
+	config.AllowAllOrigins = true
+	engine.Use(cors.New(config))
 
 	// middleware
 	engine.Use(middleware.RecordUpAndTime)
