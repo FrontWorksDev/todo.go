@@ -15,7 +15,7 @@ var DbEngine *gorm.DB
 
 func init() {
 	loadEnv()
-	DsName := "mysql://" + os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@" + os.Getenv("DB_HOST") + "/" + os.Getenv("DB_NAME") + "?reconnect=true"
+	DsName := os.Getenv("CLEARDB_DATABASE_URL")
 	fmt.Println(DsName)
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
