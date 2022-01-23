@@ -14,7 +14,7 @@ type TaskService struct{}
 
 func (TaskService) SetTask(task *model.Task) error {
 	loadEnv()
-	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
+	DsName := os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@(" + os.Getenv("HOST") + ":" + os.Getenv("DB_PORT") + ")/" + os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
 	err := errors.New("")
 	DbEngine, err = gorm.Open(mysql.Open(DsName), &gorm.Config{})
 	if err != nil && err.Error() != "" {
