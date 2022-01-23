@@ -16,6 +16,7 @@ func main() {
 		"http://localhost:3000",
 		"https://todo.frontworks.dev",
 	}
+	config.AllowCredentials = true
 	engine.Use(cors.New(config))
 
 	// middleware
