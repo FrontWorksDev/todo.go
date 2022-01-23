@@ -12,11 +12,14 @@ func main() {
 
 	// cors setting
 	config := cors.DefaultConfig()
-	//config.AllowOrigins = []string{
-	//	"http://localhost:3000",
-	//	"https://todo.frontworks.dev",
-	//}
-	config.AllowAllOrigins = true
+	config.AllowOrigins = []string{
+		"http://localhost:3000",
+		"https://todo.frontworks.dev",
+	}
+	config.AllowHeaders = []string{
+		"Origin", "Content-Length", "Content-Type", "Access-Control-Allow-Origin",
+	}
+	config.AllowCredentials = true
 	engine.Use(cors.New(config))
 
 	// middleware
