@@ -69,7 +69,7 @@ func (TaskService) UpdateTask(newTask *model.Task, id int) error {
 		log.Fatal(err.Error())
 	}
 
-	result := DbEngine.Model(&newTask).Where("ID", id).Updates(model.Task{Title: newTask.Title, Status: newTask.Status})
+	result := DbEngine.Model(&newTask).Where("ID", id).Updates(model.Task{Title: newTask.Title, Completed: newTask.Completed})
 	if result.Error != nil {
 		panic(result.Error)
 	}
