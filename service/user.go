@@ -46,7 +46,7 @@ func (UserService) GetUser(user *model.User) []model.User {
 		log.Fatal(err.Error())
 	}
 
-	tests := make([]model.User, 0)
+	tests := make([]model.User, 1)
 	result := DbEngine.Where("Email", user.Email).Find(&tests)
 	if result.Error != nil {
 		panic(result.Error)
