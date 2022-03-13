@@ -10,4 +10,5 @@ type Task struct {
 	//Status    string `gorm:"varchar(40)" json:"status" form:"status"`
 	Slug      string `gorm:"varchar(255);unique" json:"slug" form:"slug"`
 	Completed bool   `gorm:"default:false;not null" json:"completed" form:"completed"`
+	UserID    int    `gorm:"uint" json:"user_id" form:"user_id"`
 }

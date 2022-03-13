@@ -3,13 +3,20 @@ package controller
 import (
 	"app/model"
 	"app/service"
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 )
 
 func TaskAdd(c *gin.Context) {
+	session := sessions.Default(c)
 	task := model.Task{}
+	fmt.Println(session)
+
+	userId := session.Get("loginUser")
 	err := c.Bind(&task)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
@@ -18,24 +25,24 @@ func TaskAdd(c *gin.Context) {
 	}
 
 	taskService := service.TaskService{}
-	err = taskService.SetTask(&task)
+	err = taskService.SetTask(&task, userId)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"status": "ok",
+		"status": session.Get("loginUser"),
 	})
 }
 
 func TaskList(c *gin.Context) {
-	taskService := service.TaskService{}
-	TaskLists := taskService.GetTaskList()
-	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
-		"items":   TaskLists,
-	})
+	//taskService := service.TaskService{}
+	//TaskLists := taskService.GetTaskList()
+	//c.JSON(http.StatusOK, gin.H{
+	//"message": "ok",
+	//"items":   TaskLists,
+	//})
 }
 
 func TaskUpdate(c *gin.Context) {

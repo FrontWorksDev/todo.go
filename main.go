@@ -3,12 +3,20 @@ package main
 import (
 	"app/controller"
 	"app/middleware"
+
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	engine := gin.Default()
+
+	// sessions setting
+	store := cookie.NewStore([]byte("secret"))
+	store.Options(sessions.Options{MaxAge: 60 * 60 * 24, Path: "/"})
+	engine.Use(sessions.Sessions("mysession", store))
 
 	// cors setting
 	config := cors.DefaultConfig()
@@ -24,6 +32,8 @@ func main() {
 	engine.Use(middleware.RecordUpAndTime)
 
 	// CRUD task
+	engine.POST("/login", controller.UserLogin)
+	engine.POST("/logout", controller.UserLogout)
 	taskEngine := engine.Group("/task")
 	{
 		v1 := taskEngine.Group("/v1")

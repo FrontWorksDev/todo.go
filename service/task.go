@@ -12,7 +12,7 @@ import (
 
 type TaskService struct{}
 
-func (TaskService) SetTask(task *model.Task) error {
+func (TaskService) SetTask(task *model.Task, userId interface{}) error {
 	loadEnv()
 	DsName := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?parseTime=true&charset=utf8mb4&loc=Local"
 	err := errors.New("")
@@ -20,6 +20,7 @@ func (TaskService) SetTask(task *model.Task) error {
 	if err != nil && err.Error() != "" {
 		log.Fatal(err.Error())
 	}
+	task.UserID = userId.(int)
 	result := DbEngine.Create(&task)
 	if result.Error != nil {
 		return result.Error
@@ -34,7 +35,7 @@ func (TaskService) SetTask(task *model.Task) error {
 	return nil
 }
 
-func (TaskService) GetTaskList() []model.Task {
+func (TaskService) GetTaskList(userId interface{}) []model.Task {
 	loadEnv()
 	DsName := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?parseTime=true&charset=utf8mb4&loc=Local"
 
@@ -44,8 +45,8 @@ func (TaskService) GetTaskList() []model.Task {
 		log.Fatal(err.Error())
 	}
 	tests := make([]model.Task, 0)
-	fmt.Println(tests)
-	result := DbEngine.Find(&tests)
+	result := DbEngine.Where("user_id", userId).Find(&tests)
+	fmt.Println(userId)
 	if result.Error != nil {
 		panic(result.Error)
 	}
