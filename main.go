@@ -3,6 +3,7 @@ package main
 import (
 	"app/controller"
 	"app/middleware"
+	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
@@ -15,7 +16,7 @@ func main() {
 
 	// sessions setting
 	store := cookie.NewStore([]byte("secret"))
-	store.Options(sessions.Options{MaxAge: 60 * 60 * 24, Path: "/"})
+	store.Options(sessions.Options{MaxAge: 60 * 60 * 24, Path: "/", SameSite: http.SameSiteNoneMode, Secure: true})
 	engine.Use(sessions.Sessions("mysession", store))
 
 	// cors setting
