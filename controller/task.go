@@ -14,9 +14,9 @@ import (
 func TaskAdd(c *gin.Context) {
 	session := sessions.Default(c)
 	task := model.Task{}
-	fmt.Println(session)
+	fmt.Println("hogehogehogehogehogehogeho")
 
-	userId := session.Get("loginUser")
+	userId := session.Get("UserId")
 	err := c.Bind(&task)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")

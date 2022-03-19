@@ -3,6 +3,7 @@ package controller
 import (
 	"app/model"
 	"app/service"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -26,19 +27,19 @@ func UserLogin(c *gin.Context) {
 	err = userService.SetUser(&user)
 	if err != nil {
 		loginUser := userService.GetUser(&user)[0].ID
-		session.Set("loginUser", loginUser)
+		session.Set("UserId", loginUser)
 	} else {
 		newUser := userService.GetUser(&user)[0].ID
-		session.Set("loginUser", newUser)
+		session.Set("UserId", newUser)
 	}
 
 	session.Save()
 	taskService := service.TaskService{}
-	UserId := session.Get("loginUser")
-	taskData := taskService.GetTaskList(UserId)
-
+	userId := session.Get("UserId")
+	taskData := taskService.GetTaskList(userId)
+	fmt.Println("controller", userId)
 	c.JSON(http.StatusCreated, gin.H{
-		"status": session.Get("loginUser"),
+		"status": session.Get("UserId"),
 		"items":  taskData,
 	})
 }

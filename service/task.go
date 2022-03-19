@@ -22,6 +22,7 @@ func (TaskService) SetTask(task *model.Task, userId interface{}) error {
 	}
 	task.UserID = userId.(int)
 	result := DbEngine.Create(&task)
+	fmt.Println(result)
 	if result.Error != nil {
 		return result.Error
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"app/controller"
 	"app/middleware"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -36,6 +37,7 @@ func main() {
 	engine.POST("/login", controller.UserLogin)
 	engine.POST("/logout", controller.UserLogout)
 	taskEngine := engine.Group("/task")
+	taskEngine.Use(sessionCheck(engine))
 	{
 		v1 := taskEngine.Group("/v1")
 		{
@@ -47,4 +49,23 @@ func main() {
 	}
 
 	engine.Run()
+}
+
+func sessionCheck(engine *gin.Engine) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		UserId := session.Get("UserId")
+		fmt.Println(UserId)
+
+		if UserId == nil {
+			fmt.Println("not login")
+			engine.POST("/login", controller.UserLogin)
+			c.Abort()
+		} else {
+			c.Set("UserId", UserId)
+			c.Next()
+		}
+
+		fmt.Println("ended login")
+	}
 }
