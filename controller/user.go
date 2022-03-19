@@ -14,6 +14,7 @@ var result *model.User
 func UserLogin(c *gin.Context) {
 	user := model.User{}
 	err := c.Bind(&user)
+	session := sessions.Default(c)
 
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
@@ -22,27 +23,17 @@ func UserLogin(c *gin.Context) {
 	}
 
 	userService := service.UserService{}
-	loginUser := userService.GetUser(&user)[0].ID
-	if loginUser == 0 {
-		err = userService.SetUser(&user)
-		if err != nil {
-			c.String(http.StatusInternalServerError, "Server Error")
-
-			return
-		}
-		newUser := userService.GetUser(&user)[0].ID
-		session := sessions.Default(c)
-		session.Set("loginUser", newUser)
-		session.Save()
-		c.Abort()
-	} else {
-		session := sessions.Default(c)
+	err = userService.SetUser(&user)
+	if err != nil {
+		loginUser := userService.GetUser(&user)[0].ID
 		session.Set("loginUser", loginUser)
-		session.Save()
-		c.Next()
+	} else {
+		newUser := userService.GetUser(&user)[0].ID
+		session.Set("loginUser", newUser)
 	}
+
+	session.Save()
 	taskService := service.TaskService{}
-	session := sessions.Default(c)
 	UserId := session.Get("loginUser")
 	taskData := taskService.GetTaskList(UserId)
 
