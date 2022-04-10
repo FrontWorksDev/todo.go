@@ -16,7 +16,6 @@ func TaskAdd(c *gin.Context) {
 	task := model.Task{}
 	fmt.Println("hogehogehogehogehogehogeho")
 
-	userId := session.Get("UserId")
 	err := c.Bind(&task)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
@@ -25,7 +24,7 @@ func TaskAdd(c *gin.Context) {
 	}
 
 	taskService := service.TaskService{}
-	err = taskService.SetTask(&task, userId)
+	err = taskService.SetTask(&task)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 
@@ -37,12 +36,13 @@ func TaskAdd(c *gin.Context) {
 }
 
 func TaskList(c *gin.Context) {
-	//taskService := service.TaskService{}
-	//TaskLists := taskService.GetTaskList()
-	//c.JSON(http.StatusOK, gin.H{
-	//"message": "ok",
-	//"items":   TaskLists,
-	//})
+	taskService := service.TaskService{}
+	userId := c.Param("userId")
+	TaskLists := taskService.GetTaskList(userId)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"items":   TaskLists,
+	})
 }
 
 func TaskUpdate(c *gin.Context) {

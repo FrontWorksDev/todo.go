@@ -3,14 +3,37 @@ package controller
 import (
 	"app/model"
 	"app/service"
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var result *model.User
+
+type UserInfo struct {
+	username        string
+	email           string
+	passwordEncrypt byte
+}
+
+func UserCreate(c *gin.Context) {
+	user := model.User{}
+	err := c.Bind(&user)
+
+	if err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+
+		return
+	}
+
+	passwordEncrypt, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	user.Password = string(passwordEncrypt)
+	userService := service.UserService{}
+	userService.SetUser(&user)
+}
 
 func UserLogin(c *gin.Context) {
 	user := model.User{}
@@ -24,23 +47,19 @@ func UserLogin(c *gin.Context) {
 	}
 
 	userService := service.UserService{}
-	err = userService.SetUser(&user)
-	if err != nil {
-		loginUser := userService.GetUser(&user)[0].ID
-		session.Set("UserId", loginUser)
-	} else {
-		newUser := userService.GetUser(&user)[0].ID
-		session.Set("UserId", newUser)
-	}
+	userInfo := userService.GetUser(&user)[0]
+	dbPassword := userInfo.Password
 
+	if err := bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(user.Password)); err != nil {
+		log.Println("Login Failed")
+		c.Abort()
+	} else {
+		log.Println("Login Success")
+		session.Set("username", userInfo.Username)
+	}
 	session.Save()
-	taskService := service.TaskService{}
-	userId := session.Get("UserId")
-	taskData := taskService.GetTaskList(userId)
-	fmt.Println("controller", userId)
 	c.JSON(http.StatusCreated, gin.H{
-		"status": session.Get("UserId"),
-		"items":  taskData,
+		"session": session.Get("username"),
 	})
 }
 

@@ -12,7 +12,7 @@ import (
 
 type TaskService struct{}
 
-func (TaskService) SetTask(task *model.Task, userId interface{}) error {
+func (TaskService) SetTask(task *model.Task) error {
 	loadEnv()
 	DsName := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?parseTime=true&charset=utf8mb4&loc=Local"
 	err := errors.New("")
@@ -20,7 +20,6 @@ func (TaskService) SetTask(task *model.Task, userId interface{}) error {
 	if err != nil && err.Error() != "" {
 		log.Fatal(err.Error())
 	}
-	task.UserID = userId.(int)
 	result := DbEngine.Create(&task)
 	fmt.Println(result)
 	if result.Error != nil {

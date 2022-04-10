@@ -34,27 +34,23 @@ func main() {
 	engine.Use(middleware.RecordUpAndTime)
 
 	// CRUD task
-	engine.POST("/login", controller.UserLogin)
-	engine.POST("/logout", controller.UserLogout)
 	taskEngine := engine.Group("/task")
-	taskEngine.Use(sessionCheck(engine))
 	{
 		v1 := taskEngine.Group("/v1")
 		{
 			v1.POST("/add", controller.TaskAdd)
-			v1.GET("/list", controller.TaskList)
+			v1.POST("/list/:userId", controller.TaskList)
 			v1.PUT("/update/:id", controller.TaskUpdate)
 			v1.DELETE("/delete/:id", controller.TaskDelete)
 		}
 	}
-
 	engine.Run()
 }
 
 func sessionCheck(engine *gin.Engine) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		UserId := session.Get("UserId")
+		UserId := session.Get("content")
 		fmt.Println(UserId)
 
 		if UserId == nil {
