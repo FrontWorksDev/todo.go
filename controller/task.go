@@ -6,12 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 func TaskAdd(c *gin.Context) {
-	session := sessions.Default(c)
 	task := model.Task{}
 
 	err := c.Bind(&task)
@@ -29,7 +27,7 @@ func TaskAdd(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"status": session.Get("loginUser"),
+		"status": "create success",
 	})
 }
 
