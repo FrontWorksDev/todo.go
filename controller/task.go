@@ -3,13 +3,15 @@ package controller
 import (
 	"app/model"
 	"app/service"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func TaskAdd(c *gin.Context) {
 	task := model.Task{}
+
 	err := c.Bind(&task)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
@@ -25,13 +27,14 @@ func TaskAdd(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"status": "ok",
+		"status": "create success",
 	})
 }
 
 func TaskList(c *gin.Context) {
 	taskService := service.TaskService{}
-	TaskLists := taskService.GetTaskList()
+	userId := c.Param("userId")
+	TaskLists := taskService.GetTaskList(userId)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 		"items":   TaskLists,
