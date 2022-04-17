@@ -3,7 +3,6 @@ package service
 import (
 	"app/model"
 	"errors"
-	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -34,7 +33,7 @@ func (TaskService) SetTask(task *model.Task) error {
 	return nil
 }
 
-func (TaskService) GetTaskList() []model.Task {
+func (TaskService) GetTaskList(userId interface{}) []model.Task {
 	loadEnv()
 	DsName := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?parseTime=true&charset=utf8mb4&loc=Local"
 
@@ -44,8 +43,7 @@ func (TaskService) GetTaskList() []model.Task {
 		log.Fatal(err.Error())
 	}
 	tests := make([]model.Task, 0)
-	fmt.Println(tests)
-	result := DbEngine.Find(&tests)
+	result := DbEngine.Where("user_id", userId).Find(&tests)
 	if result.Error != nil {
 		panic(result.Error)
 	}
