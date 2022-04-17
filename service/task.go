@@ -3,7 +3,6 @@ package service
 import (
 	"app/model"
 	"errors"
-	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -21,7 +20,6 @@ func (TaskService) SetTask(task *model.Task) error {
 		log.Fatal(err.Error())
 	}
 	result := DbEngine.Create(&task)
-	fmt.Println(result)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -46,7 +44,6 @@ func (TaskService) GetTaskList(userId interface{}) []model.Task {
 	}
 	tests := make([]model.Task, 0)
 	result := DbEngine.Where("user_id", userId).Find(&tests)
-	fmt.Println(userId)
 	if result.Error != nil {
 		panic(result.Error)
 	}

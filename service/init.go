@@ -22,7 +22,7 @@ func init() {
 		log.Fatal(err.Error())
 	}
 
-	DbEngine.AutoMigrate(new(model.Task), new(model.User))
+	DbEngine.AutoMigrate(new(model.Task))
 	defer func() {
 		if db, err := DbEngine.DB(); err == nil {
 			db.Close()

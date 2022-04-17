@@ -3,22 +3,13 @@ package main
 import (
 	"app/controller"
 	"app/middleware"
-	"fmt"
-	"net/http"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	engine := gin.Default()
-
-	// sessions setting
-	store := cookie.NewStore([]byte("secret"))
-	store.Options(sessions.Options{MaxAge: 60 * 60 * 24, Path: "/", SameSite: http.SameSiteNoneMode, Secure: true})
-	engine.Use(sessions.Sessions("mysession", store))
 
 	// cors setting
 	config := cors.DefaultConfig()
@@ -45,23 +36,4 @@ func main() {
 		}
 	}
 	engine.Run()
-}
-
-func sessionCheck(engine *gin.Engine) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		UserId := session.Get("content")
-		fmt.Println(UserId)
-
-		if UserId == nil {
-			fmt.Println("not login")
-			engine.POST("/login", controller.UserLogin)
-			c.Abort()
-		} else {
-			c.Set("UserId", UserId)
-			c.Next()
-		}
-
-		fmt.Println("ended login")
-	}
 }

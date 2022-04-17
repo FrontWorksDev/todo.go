@@ -3,7 +3,6 @@ package controller
 import (
 	"app/model"
 	"app/service"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,7 +13,6 @@ import (
 func TaskAdd(c *gin.Context) {
 	session := sessions.Default(c)
 	task := model.Task{}
-	fmt.Println("hogehogehogehogehogehogeho")
 
 	err := c.Bind(&task)
 	if err != nil {
