@@ -20,7 +20,7 @@ func TaskAdd(c *gin.Context) {
 	}
 
 	taskService := service.TaskService{}
-	err = taskService.SetTask(&task)
+	item, err := taskService.SetTask(&task)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 
@@ -28,6 +28,7 @@ func TaskAdd(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"status": "create success",
+		"items":  item,
 	})
 }
 

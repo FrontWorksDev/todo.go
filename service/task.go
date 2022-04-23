@@ -11,7 +11,7 @@ import (
 
 type TaskService struct{}
 
-func (TaskService) SetTask(task *model.Task) error {
+func (TaskService) SetTask(task *model.Task) (*model.Task, error) {
 	loadEnv()
 	DsName := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":3306)/" + os.Getenv("DB_NAME") + "?parseTime=true&charset=utf8mb4&loc=Local"
 	err := errors.New("")
@@ -21,7 +21,7 @@ func (TaskService) SetTask(task *model.Task) error {
 	}
 	result := DbEngine.Create(&task)
 	if result.Error != nil {
-		return result.Error
+		return task, result.Error
 	}
 
 	defer func() {
@@ -30,7 +30,7 @@ func (TaskService) SetTask(task *model.Task) error {
 		}
 	}()
 
-	return nil
+	return task, result.Error
 }
 
 func (TaskService) GetTaskList(userId interface{}) []model.Task {
