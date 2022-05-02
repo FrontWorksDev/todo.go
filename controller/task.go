@@ -42,6 +42,16 @@ func TaskList(c *gin.Context) {
 	})
 }
 
+func CompletedList(c *gin.Context) {
+	taskService := service.TaskService{}
+	userId := c.Param("userId")
+	CompletedLists := taskService.GetCompletedList(userId)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"items":   CompletedLists,
+	})
+}
+
 func TaskUpdate(c *gin.Context) {
 	id := c.Param("id")
 	intId, errId := strconv.ParseInt(id, 10, 0)

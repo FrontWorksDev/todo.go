@@ -31,6 +31,7 @@ func main() {
 		{
 			v1.POST("/add", controller.TaskAdd)
 			v1.POST("/list/:userId", controller.TaskList)
+			v1.POST("/completedList/:userId", controller.CompletedList)
 			v1.PUT("/update/:id", controller.TaskUpdate)
 			v1.DELETE("/delete/:id", controller.TaskDelete)
 		}
