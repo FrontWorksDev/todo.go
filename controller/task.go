@@ -20,7 +20,7 @@ func TaskAdd(c *gin.Context) {
 	}
 
 	taskService := service.TaskService{}
-	err = taskService.SetTask(&task)
+	item, err := taskService.SetTask(&task)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 
@@ -28,6 +28,7 @@ func TaskAdd(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"status": "create success",
+		"items":  item,
 	})
 }
 
@@ -38,6 +39,16 @@ func TaskList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 		"items":   TaskLists,
+	})
+}
+
+func CompletedList(c *gin.Context) {
+	taskService := service.TaskService{}
+	userId := c.Param("userId")
+	CompletedLists := taskService.GetCompletedList(userId)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"items":   CompletedLists,
 	})
 }
 
