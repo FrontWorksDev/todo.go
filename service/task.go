@@ -44,7 +44,7 @@ func (TaskService) GetTaskList(userId string) []model.Task {
 		log.Fatal(err.Error())
 	}
 	tests := make([]model.Task, 0)
-	result := DbEngine.Where(map[string]interface{}{"user_id": userId, "completed": false}).Find(&tests)
+	result := DbEngine.Where(map[string]interface{}{"user_id": userId, "completed": false}).Order("updated_at asc").Find(&tests)
 	if result.Error != nil {
 		panic(result.Error)
 	}
@@ -68,7 +68,7 @@ func (TaskService) GetCompletedList(userId string) []model.Task {
 		log.Fatal(err.Error())
 	}
 	tests := make([]model.Task, 0)
-	result := DbEngine.Where(&model.Task{UserID: userId, Completed: true}).Find(&tests)
+	result := DbEngine.Where(&model.Task{UserID: userId, Completed: true}).Order("updated_at asc").Find(&tests)
 	if result.Error != nil {
 		panic(result.Error)
 	}
@@ -92,7 +92,7 @@ func (TaskService) UpdateTask(newTask *model.Task, id int) error {
 		log.Fatal(err.Error())
 	}
 
-	result := DbEngine.Model(&newTask).Where("ID", id).Updates(model.Task{Title: newTask.Title, Completed: newTask.Completed})
+	result := DbEngine.Model(&newTask).Where("ID", id).Updates(map[string]interface{}{"Title": newTask.Title, "Completed": newTask.Completed})
 	if result.Error != nil {
 		panic(result.Error)
 	}
