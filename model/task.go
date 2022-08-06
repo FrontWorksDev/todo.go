@@ -8,7 +8,8 @@ type Task struct {
 	gorm.Model
 	Title string `gorm:"varchar(40)" json:"title" form:"title"`
 	//Status    string `gorm:"varchar(40)" json:"status" form:"status"`
-	Slug      string `gorm:"varchar(255);unique" json:"slug" form:"slug"`
-	Completed bool   `gorm:"default:false;not null" json:"completed" form:"completed"`
-	UserID    string `gorm:"varchar(255)" json:"userId" form:"userId"`
+	Slug      string  `gorm:"varchar(255);unique" json:"slug" form:"slug"`
+	Position  float64 `gorm:"default:10000.0" json:"position" form:"position"`
+	Completed bool    `gorm:"default:false;not null" json:"completed" form:"completed"`
+	UserID    string  `gorm:"varchar(255)" json:"userId" form:"userId"`
 }
